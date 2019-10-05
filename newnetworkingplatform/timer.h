@@ -173,7 +173,7 @@ typedef struct{
     const TAxCTL_MC_value mc;
 }timer_config;
 
-#define FULL_PERIOD 52800
+#define FULL_PERIOD 27240U
 #define HALF_PERIOD (FULL_PERIOD/2U)
 
 

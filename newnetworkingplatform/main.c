@@ -28,12 +28,19 @@ int main(void)
 
     /** Initialize all 3 LED's on P1.0, P1.5, and P 2.1. P2.0 and P2.2 are turned off so only Green shows. **/
     led_init();
-    transition_idle();
+
 
     /** Enable interrupt on rising edge to start. **/
     gpio_init(&manchester);
     NVIC_EnableIRQ(PORT2_IRQn);
-    gpio_set_interrupt(&manchester, OFF);
+
+//    if(gpio_read(&manchester) == ON){
+        transition_idle();
+        gpio_set_interrupt(&manchester, ON);
+//    } else {
+//        transition_collision();
+//        gpio_set_interrupt(&manchester, OFF);
+//    }
 
     /** Initialize timers **/
     timer_init(&TIMERA);
@@ -93,10 +100,13 @@ void configure_clock(void){
     /* Step 3: Configure DCO to 48MHz, ensure MCLK uses DCO as source*/
     CS->KEY = CS_KEY_VAL ;                  // Unlock CS module for register access
     CS->CTL0 = 0;                           // Reset tuning parameters
-    CS->CTL0 = CS_CTL0_DCORSEL_5;           // Set DCO to 48MHz
-    /* Select MCLK = DCO, no divider */
-    CS->CTL1 = CS->CTL1 & ~(CS_CTL1_SELM_MASK | CS_CTL1_DIVM_MASK) |
-            CS_CTL1_SELM_3;
+//    CS->CTL0 = CS_CTL0_DCORSEL_5;           // Set DCO to 48MHz
+//    /* Select MCLK = DCO, no divider */
+//    CS->CTL1 = CS->CTL1 & ~(CS_CTL1_SELM_MASK | CS_CTL1_DIVM_MASK) |
+//            CS_CTL1_SELM_3;
+    CS->CTL0 = CS_CTL0_DCORSEL_4;    // Set DCO to 24MHz
+    CS->CTL1 = (CS->CTL1 & ~(CS_CTL1_SELM_MASK | CS_CTL1_DIVM_MASK | CS_CTL1_DIVHS_MASK | CS_CTL1_DIVS_MASK | CS_CTL1_SELS_MASK)) | CS_CTL1_SELA__REFOCLK | CS_CTL1_SELS__DCOCLK | CS_CTL1_SELM__DCOCLK;
+
     CS->KEY = 0;
 }
 
