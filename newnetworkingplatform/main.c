@@ -3,6 +3,7 @@
 #include "ledbank.h"
 #include "timer.h"
 #include "state.h"
+#include "uart.h"
 
 
 /**
@@ -21,7 +22,8 @@ void main_program(void);
 
 int main(void)
 {
-    main_program();
+    uart_config(UART_1_ADDRESS);
+    while(1);
 }
 
 void main_program(void){

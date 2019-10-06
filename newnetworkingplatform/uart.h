@@ -8,6 +8,8 @@
 #ifndef UART_H_
 #define UART_H_
 
+#include <stdint.h>
+
 typedef enum{
     UCAxCTLW0=0x0U, // Control Word 0
     UCAxCTLW1=0x2U, // Control Word 1
@@ -89,9 +91,9 @@ typedef enum{
 
 typedef enum{
     UCAxIFG__UCTXCPTIFG=0x8U,
-    UCAxIFG__UCSTTIE=0x4U,
-    UCAxIFG__UCTXIE=0x2U,
-    UCAxIFG__UCRXIE=0x1U
+    UCAxIFG__UCSTTIFG=0x4U,
+    UCAxIFG__UCTXIFG=0x2U,
+    UCAxIFG__UCRXIFG=0x1U
 }UCAxIFG_mask;
 
 /**--------------------------------------------------------------------**/
@@ -126,8 +128,8 @@ typedef enum{
 typedef enum{
     UCAxCTLW0__UCMODEx_UART_MODE=0x0U,
     UCAxCTLW0__UCMODEx_IDLE_LINE_MULTI_PROC_MODE=0x200U,
-    UCAxCTLW0__UCMODEx_ADDR_BIT_MULTI_PROC_MODE=0x300U,
-    UCAxCTLW0__UCMODEx_UART_MODE_BAUD_DETECT_MODE=0x400U
+    UCAxCTLW0__UCMODEx_ADDR_BIT_MULTI_PROC_MODE=0x400U,
+    UCAxCTLW0__UCMODEx_UART_MODE_BAUD_DETECT_MODE=0x300U
 }UCAxCTLW0_UCMODEx_value;
 
 typedef enum{
@@ -139,7 +141,7 @@ typedef enum{
     UCAxCTLW0__UCSSELx_UCLK=0x0U,
     UCAxCTLW0__UCSSELx_ACLK=0x40U,
     UCAxCTLW0__UCSSELx_SMCLK=0x80U,
-    UCAxCTLW0__UCSSELx_SMCLK=0xC0U
+    UCAxCTLW0__UCSSELx_SMCLK_2=0xC0U
 }UCAxCTLW0_UCSSELx_value;
 
 typedef enum{
@@ -279,25 +281,30 @@ typedef enum{
 /*******************************************************************************/
 
 typedef enum{
-    UCAxIE__UCTXCPTIFG_NO_INTERRUPT=0x0U,
-    UCAxIE__UCTXCPTIFG_INTERRUPT_PENDING=0x8U
+    UCAxIFG__UCTXCPTIFG_NO_INTERRUPT=0x0U,
+    UCAxIFG__UCTXCPTIFG_INTERRUPT_PENDING=0x8U
 }UCAxIE_UCTXCPTIFG_value;
 
 typedef enum{
-    UCAxIE__UCSTTIFG_NO_INTERRUPT=0x0U,
-    UCAxIE__UCSTTIFG_INTERRUPT_PENDING=0x4U
+    UCAxIFG__UCSTTIFG_NO_INTERRUPT=0x0U,
+    UCAxIFG__UCSTTIFG_INTERRUPT_PENDING=0x4U
 }UCAxIE_UCSTTIFG_value;
 
 typedef enum{
-    UCAxIE__UCTXIFG_NO_INTERRUPT=0x0U,
-    UCAxIE__UCTXIFG_INTERRUPT_PENDING=0x2U
+    UCAxIFG__UCTXIFG_NO_INTERRUPT=0x0U,
+    UCAxIFG__UCTXIFG_INTERRUPT_PENDING=0x2U
 }UCAxIE_UCTXIFG_value;
 
 typedef enum{
-    UCAxIE__UCRXIFG_NO_INTERRUPT=0x0U,
-    UCAxIE__UCRXIFG_INTERRUPT_PENDING=0x1U
+    UCAxIFG__UCRXIFG_NO_INTERRUPT=0x0U,
+    UCAxIFG__UCRXIFG_INTERRUPT_PENDING=0x1U
 }UCAxIE_UCRXIFG_value;
 
 /*********************************************************************************/
+
+#define UART_1_ADDRESS 0x40001000
+
+void uart_config(const uint32_t uart_address);
+void uart_access(const uint32_t uart_address, uart_register register_to_change, const uint16_t mask, const uint16_t value);
 
 #endif /* UART_H_ */
