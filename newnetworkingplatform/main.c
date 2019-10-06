@@ -17,9 +17,14 @@ eSM_State state;
 void configure_clock(void);
 void test_master_clock(void);
 void error(void);
+void main_program(void);
 
 int main(void)
 {
+    main_program();
+}
+
+void main_program(void){
     volatile uint32_t i; // Lock CS module from unintended accesses
 
     /** Ramp the clock up to 48Mhz, test output on 4.3 **/
