@@ -306,5 +306,7 @@ typedef enum{
 
 void uart_config(const uint32_t uart_address);
 void uart_access(const uint32_t uart_address, uart_register register_to_change, const uint16_t mask, const uint16_t value);
+void uart_start_receiving(const uint32_t uart_address);
+uint16_t uart_read(const uint32_t uart_address, uart_register register_to_read, const uint16_t mask);
 
 #endif /* UART_H_ */

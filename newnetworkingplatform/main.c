@@ -22,7 +22,10 @@ void main_program(void);
 
 int main(void)
 {
+    configure_clock();
     uart_config(UART_1_ADDRESS);
+    NVIC_EnableIRQ(EUSCIA0_IRQn);
+    uart_start_receiving(UART_1_ADDRESS);
     while(1);
 }
 
