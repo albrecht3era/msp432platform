@@ -11,19 +11,16 @@ extern const gpio redLED;
 extern const gpio greenLED;
 extern const gpio yellowLED;
 extern const gpio LEDTURNOFF_R;
-extern const gpio LEDTURNOFF_B;
 
 void led_init(void){
     gpio_init(&greenLED);
     gpio_init(&redLED);
     gpio_init(&yellowLED);
     gpio_init(&LEDTURNOFF_R);
-    gpio_init(&LEDTURNOFF_B);
     gpio_clear(&LEDTURNOFF_R);
-    gpio_clear(&LEDTURNOFF_B);
-    gpio_clear(&greenLED);
-    gpio_clear(&redLED);
-    gpio_clear(&yellowLED);
+    gpio_set(&greenLED);
+    gpio_set(&redLED);
+    gpio_set(&yellowLED);
 }
 
 void led_idle_mode(void){
