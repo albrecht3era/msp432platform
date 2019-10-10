@@ -7,18 +7,19 @@
 
 #include "uart.h"
 #include "gpio.h"
+#include "transmitter.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 extern const gpio rxd;
-extern const gpio ste;
 extern const gpio greenLED;
 extern const gpio yellowLED;
+extern eTransmit_Status transmitting;
 
 static volatile uint16_t buffercounter;
-const uint16_t buffermax = 6U;
-volatile char buffer[buffermax];
-
+volatile char buffer[BUFFER_MAX];
+volatile bool ready_to_transmit;
 
 void uart_access(const uint32_t uart_address, uart_register register_to_change, const uint16_t mask, const uint16_t value){
     if(value > 0U){
@@ -64,10 +65,11 @@ void uart_config(const uint32_t uart_address){
     gpio_init(&rxd);
     gpio_access(&rxd, PxSEL0, OFF, ACTIVE_HIGH, rxd.pin_num);
     gpio_access(&rxd, PxSEL1, ON, ACTIVE_HIGH, rxd.pin_num);
-    gpio_init(&ste);
-    gpio_access(&ste, PxSEL0, OFF, ACTIVE_HIGH, ste.pin_num);
-    gpio_access(&ste, PxSEL1, OFF, ACTIVE_HIGH, ste.pin_num);
+    //gpio_init(&ste);
+    //gpio_access(&ste, PxSEL0, OFF, ACTIVE_HIGH, ste.pin_num);
+    //gpio_access(&ste, PxSEL1, OFF, ACTIVE_HIGH, ste.pin_num);
     buffercounter = 0U;
+    ready_to_transmit = false;
 }
 
 void uart_start_receiving(const uint32_t uart_address){
@@ -81,19 +83,14 @@ void uart_start_receiving(const uint32_t uart_address){
 }
 
 void EUSCIA0_IRQHandler(void){
-//    uint16_t interrupt_flags = uart_read(UART_1_ADDRESS, UCAxIFG, UCAxIFG__UCRXIFG);
-//    if(interrupt_flags == UCAxIFG__UCRXIFG_INTERRUPT_PENDING){
-//        uint16_t read_value = uart_read(UART_1_ADDRESS, UCAxRXBUF, UCAxRXBUF__UCRXBUF);
-//    } else if (interrupt_flags == UCAxIFG__UCSTTIFG_INTERRUPT_PENDING){
-//        uart_access(UART_1_ADDRESS, UCAxIFG, UCAxIFG__UCSTTIFG, UCAxIFG__UCSTTIFG_NO_INTERRUPT);
-//        uart_read(UART_1_ADDRESS, UCAxRXBUF, UCAxRXBUF__UCRXBUF);
-//    }
-    buffer[buffercounter] = (char) uart_read(UART_1_ADDRESS, UCAxRXBUF, UCAxRXBUF__UCRXBUF);
-    if(buffer[buffercounter] == '\n' || buffercounter == buffermax){
-        printf("%s\n", buffer);
-        buffercounter = 0U;
-    } else {
-        buffercounter++;
+    if(transmitting == eTransmit__DONE) {
+        buffer[buffercounter] = (char) uart_read(UART_1_ADDRESS, UCAxRXBUF, UCAxRXBUF__UCRXBUF);
+        if(buffer[buffercounter] == '\n' || buffercounter == BUFFER_MAX){
+            buffercounter = 0U;
+            ready_to_transmit = true;
+        } else {
+            buffercounter++;
+        }
     }
 }
 

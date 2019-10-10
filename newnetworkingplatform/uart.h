@@ -303,6 +303,7 @@ typedef enum{
 /*********************************************************************************/
 
 #define UART_1_ADDRESS 0x40001000
+#define BUFFER_MAX 6U
 
 void uart_config(const uint32_t uart_address);
 void uart_access(const uint32_t uart_address, uart_register register_to_change, const uint16_t mask, const uint16_t value);

@@ -4,6 +4,7 @@
 #include "timer.h"
 #include "state.h"
 #include "uart.h"
+#include "transmitter.h"
 
 
 /**
@@ -11,8 +12,14 @@
  */
 
 extern const gpio manchester;
+extern const gpio encoding_out;
 extern const timer_config TIMERA;
+extern const timer_config MANCHESTER_TIMER;
 eSM_State state;
+
+extern volatile char buffer[BUFFER_MAX];
+extern volatile bool ready_to_transmit;
+extern volatile eTransmit_Status transmitting;
 
 
 void configure_clock(void);
@@ -25,16 +32,35 @@ int main(void)
     configure_clock();
     uart_config(UART_1_ADDRESS);
     NVIC_EnableIRQ(EUSCIA0_IRQn);
+    gpio_init(&encoding_out);
+    gpio_set(&encoding_out);
+    timer_init(&MANCHESTER_TIMER);
+    set_timer_compare(&MANCHESTER_TIMER, CCR0, MANCHESTER_HALF_PERIOD);
+    enable_timer_interrupt(&MANCHESTER_TIMER, CCTL0, TA1_0_IRQn);
     uart_start_receiving(UART_1_ADDRESS);
-    while(1);
+    load_buffer(buffer, sizeof(buffer));
+    main_program();
+#if defined(ONE_TIME_LOAD)
+    while(!ready_to_transmit);
+#endif
+    while(1){
+          if(transmitting == eTransmit__DONE
+#if !defined(ONE_TIME_LOAD)
+                  && ready_to_transmit == true
+#endif
+                  ){
+              start_transmit();
+          }
+    }
+
 }
 
 void main_program(void){
     volatile uint32_t i; // Lock CS module from unintended accesses
 
     /** Ramp the clock up to 48Mhz, test output on 4.3 **/
-    configure_clock();
-    test_master_clock();
+    //configure_clock();
+    //test_master_clock();
 
     /** Initialize all 3 LED's on P1.0, P1.5, and P 2.1. P2.0 and P2.2 are turned off so only Green shows. **/
     led_init();
@@ -52,12 +78,12 @@ void main_program(void){
 //        gpio_set_interrupt(&manchester, OFF);
 //    }
 
-    /** Initialize timers **/
+    /** Initialize timer for state machine **/
     timer_init(&TIMERA);
     set_timer_compare(&TIMERA, CCR0, FULL_PERIOD);
-    enable_timer_interrupt(&TIMERA, CCTL0);
+    enable_timer_interrupt(&TIMERA, CCTL0, TA0_0_IRQn);
 
-    while (1);
+    /**Initialize the timer for transmitter*/
 }
 
 void error(void)

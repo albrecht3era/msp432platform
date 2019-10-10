@@ -21,10 +21,10 @@ void timer_access(const timer_config* timer_io, timer_register register_to_chang
     }
 }
 
-void enable_timer_interrupt(const timer_config* timer_io, CCTL_register cctl){
+void enable_timer_interrupt(const timer_config* timer_io, CCTL_register cctl, IRQn_Type type){
     timer_access(timer_io, TAxCTL, TAxCTL__MC, TAxCTL__MC_STOP);
     timer_access(timer_io, cctl, TAxCCTL__CCIFG, TAxCCTL__CCIFG_NO_INTERRUPT);
-    NVIC_EnableIRQ(TA0_0_IRQn);
+    NVIC_EnableIRQ(type);
     timer_access(timer_io, cctl, TAxCCTL__CCIE, TAxCCTL__CCIE_ENABLE_INTERRUPT);
 
 }
