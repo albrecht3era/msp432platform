@@ -9,6 +9,7 @@
 #include "state.h"
 #include "timer.h"
 #include <stdio.h>
+#include "transmitter.h"
 
 extern eSM_State state;
 extern const timer_config TIMERA;
@@ -16,9 +17,11 @@ extern const timer_config TIMERA;
 const gpio redLED = {PIN0, PIN0_SHIFT, PORT1_ADDR, ACTIVE_HIGH, OUTPUT};
 const gpio LEDTURNOFF_R = {PIN0, PIN0_SHIFT, PORT2_ADDR, ACTIVE_HIGH, OUTPUT};
 const gpio greenLED = {PIN1, PIN1_SHIFT, PORT2_ADDR, ACTIVE_HIGH, OUTPUT};
-const gpio LEDTURNOFF_B = {PIN2, PIN2_SHIFT, PORT2_ADDR, ACTIVE_HIGH, OUTPUT};
+const gpio encoding_out = {PIN2, PIN2_SHIFT, PORT2_ADDR, ACTIVE_HIGH, OUTPUT};
 const gpio yellowLED = {PIN5, PIN5_SHIFT, PORT1_ADDR, ACTIVE_LOW, OUTPUT};
 const gpio manchester = {PIN6, PIN6_SHIFT, PORT2_ADDR, ACTIVE_HIGH, INPUT};
+const gpio rxd = {PIN2, PIN2_SHIFT, PORT1_ADDR, ACTIVE_HIGH, INPUT};
+//const gpio ste = {PIN0, PIN0_SHIFT, PORT1_ADDR, ACTIVE_HIGH, INPUT};
 
 void PORT1_IRQHandler(void){
 

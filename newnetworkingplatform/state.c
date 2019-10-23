@@ -7,6 +7,8 @@
 #include "state.h"
 #include "timer.h"
 #include "ledbank.h"
+#include "transmitter.h"
+#include <stdio.h>
 
 extern eSM_State state;
 extern const timer_config TIMERA;
@@ -14,18 +16,17 @@ extern const timer_config TIMERA;
 void transition_idle(void){
     state = eState_IDLE;
     led_idle_mode();
-    printf("Idle Transition\n");
+    unpause_transmit();
 }
 
 void transition_busy(void){
     state = eState_BUSY;
     led_busy_mode();
     start_timer(&TIMERA);
-    printf("Busy Transition\n");
 }
 
 void transition_collision(void){
     state = eState_COLLISION;
     led_collision_mode();
-    printf("Collision Transition\n");
+    pause_transmit();
 }

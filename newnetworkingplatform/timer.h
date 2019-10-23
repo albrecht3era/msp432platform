@@ -9,6 +9,7 @@
 #define TIMER_H_
 
 #include <stdint.h>
+#include "msp.h"
 
 typedef enum{
     TAxCTL=0x0U,
@@ -56,7 +57,8 @@ typedef enum{
 }TAxCCR_mask;
 
 typedef enum{
-    TIMER_A_ADDR=0x40000000
+    TIMER_A_ADDR=0x40000000,
+    TIMER_A_1_ADDR= 0x40000000 | 0x400
 }eTimerAddress;
 
 typedef enum{
@@ -175,10 +177,11 @@ typedef struct{
 
 #define FULL_PERIOD 27240U
 #define HALF_PERIOD (FULL_PERIOD/2U)
+#define MANCHESTER_HALF_PERIOD 12000U
 
 
 void timer_access(const timer_config* timer_io, timer_register register_to_change, uint16_t register_mask, uint16_t timer_register_value);
-void enable_timer_interrupt(const timer_config* timer_io, CCTL_register cctl);
+void enable_timer_interrupt(const timer_config* timer_io, CCTL_register cctl, IRQn_Type type);
 void start_timer(const timer_config* timer_io);
 void stop_timer(const timer_config* timer_io);
 void timer_init(const timer_config* timer_io);
