@@ -17,7 +17,7 @@ typedef enum{
     eTransmit__WAITING
 }eTransmit_Status;
 
-//#define ONE_TIME_LOAD
+#define ONE_TIME_LOAD
 
 #define BITS_PER_CHAR 8U
 
