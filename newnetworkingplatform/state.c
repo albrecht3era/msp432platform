@@ -13,6 +13,7 @@
 
 extern eSM_State state;
 extern const timer_config TIMERA;
+extern const timer_config RANDOM_TIMER;
 
 void transition_idle(void){
     state = eState_IDLE;
@@ -28,6 +29,7 @@ void transition_busy(void){
         //receive_new_bit(1U);
     }
     state = eState_BUSY;
+    stop_timer(&RANDOM_TIMER);
     start_timer(&TIMERA);
     led_busy_mode();
 

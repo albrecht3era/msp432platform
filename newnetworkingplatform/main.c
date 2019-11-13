@@ -61,8 +61,8 @@ int main(void)
     gpio_init(&encoding_out);
     gpio_set(&encoding_out);
     timer_init(&MANCHESTER_TIMER);
-//    timer_init(&RANDOM_TIMER);
-//    enable_timer_interrupt(&RANDOM_TIMER, CCTL0, TA2_0_IRQn);
+    timer_init(&RANDOM_TIMER);
+    enable_timer_interrupt(&RANDOM_TIMER, CCTL0, TA2_0_IRQn);
     set_timer_compare(&MANCHESTER_TIMER, CCR0, MANCHESTER_HALF_PERIOD);
     enable_timer_interrupt(&MANCHESTER_TIMER, CCTL0, TA1_0_IRQn);
     uart_start_receiving(UART_1_ADDRESS);

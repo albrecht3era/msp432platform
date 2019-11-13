@@ -63,7 +63,7 @@ typedef enum{
 typedef enum{
     TIMER_A_ADDR=0x40000000,
     TIMER_A_1_ADDR= 0x40000000 | 0x400,
-    TIMER_A_2_ADDR = 0x40008000
+    TIMER_A_2_ADDR = 0x40000800
 }eTimerAddress;
 
 typedef enum{
