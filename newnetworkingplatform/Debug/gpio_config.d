@@ -20,6 +20,13 @@ gpio_config.obj: C:/ti/ccs901/ccs/ccs_base/arm/include/system_msp432p401r.h
 gpio_config.obj: ../gpio.h
 gpio_config.obj: ../state.h
 gpio_config.obj: ../timer.h
+gpio_config.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdio.h
+gpio_config.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h
+gpio_config.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/linkage.h
+gpio_config.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h
+gpio_config.obj: ../transmitter.h
+gpio_config.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h
+gpio_config.obj: ../receiver.h
 
 ../gpio_config.c: 
 C:/ti/ccs901/ccs/ccs_base/arm/include/msp.h: 
@@ -41,3 +48,10 @@ C:/ti/ccs901/ccs/ccs_base/arm/include/system_msp432p401r.h:
 ../gpio.h: 
 ../state.h: 
 ../timer.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdio.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/linkage.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h: 
+../transmitter.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h: 
+../receiver.h: 

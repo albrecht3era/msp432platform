@@ -8,6 +8,7 @@
 #include "uart.h"
 #include "gpio.h"
 #include "transmitter.h"
+#include "message.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -68,7 +69,7 @@ void uart_config(const uint32_t uart_address){
     //gpio_init(&ste);
     //gpio_access(&ste, PxSEL0, OFF, ACTIVE_HIGH, ste.pin_num);
     //gpio_access(&ste, PxSEL1, OFF, ACTIVE_HIGH, ste.pin_num);
-    buffercounter = 0U;
+    buffercounter = BUFFER_COUNTER_INIT;
     ready_to_transmit = false;
 }
 
@@ -86,7 +87,9 @@ void EUSCIA0_IRQHandler(void){
     if(transmitting == eTransmit__DONE) {
         buffer[buffercounter] = (char) uart_read(UART_1_ADDRESS, UCAxRXBUF, UCAxRXBUF__UCRXBUF);
         if(buffer[buffercounter] == '\n' || buffercounter == BUFFER_MAX){
-            buffercounter = 0U;
+            message new_message;
+            message_setup(&new_message, (uint8_t*) buffer, (buffercounter - MESSAGE_HEADER_SIZE));
+            buffercounter = BUFFER_COUNTER_INIT;
             ready_to_transmit = true;
         } else {
             buffercounter++;

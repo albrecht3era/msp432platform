@@ -21,6 +21,10 @@ void timer_access(const timer_config* timer_io, timer_register register_to_chang
     }
 }
 
+uint16_t timer_read(const timer_config* timer_io, timer_register register_to_read, uint16_t register_mask){
+    return *((uint16_t*)(timer_io->port_address | register_to_read)) &= (register_mask);
+}
+
 void enable_timer_interrupt(const timer_config* timer_io, CCTL_register cctl, IRQn_Type type){
     timer_access(timer_io, TAxCTL, TAxCTL__MC, TAxCTL__MC_STOP);
     timer_access(timer_io, cctl, TAxCCTL__CCIFG, TAxCCTL__CCIFG_NO_INTERRUPT);

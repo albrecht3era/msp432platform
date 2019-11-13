@@ -14,11 +14,15 @@ ORDERED_OBJS += \
 "./gpio_config.obj" \
 "./ledbank.obj" \
 "./main.obj" \
+"./message.obj" \
+"./receiver.obj" \
 "./startup_msp432p401r_ccs.obj" \
 "./state.obj" \
 "./system_msp432p401r.obj" \
 "./timer.obj" \
 "./timer_config.obj" \
+"./transmitter.obj" \
+"./uart.obj" \
 "../msp432p401r.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
@@ -148,7 +152,7 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 newnetworkingplatform.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --opt_for_speed=0 --advice:power=all --define=__MSP432P401R__ --define=ccs -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"newnetworkingplatform.map" --heap_size=1024 --stack_size=512 -i"C:/ti/ccs901/ccs/ccs_base/arm/include" -i"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/lib" -i"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="newnetworkingplatform_linkInfo.xml" --rom_model -o "newnetworkingplatform.out" $(ORDERED_OBJS)
+	"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O0 --opt_for_speed=5 --fp_mode=strict --advice:power=all --define=__MSP432P401R__ --define=ccs -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"newnetworkingplatform.map" --heap_size=1024 --stack_size=512 -i"C:/ti/ccs901/ccs/ccs_base/arm/include" -i"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/lib" -i"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="newnetworkingplatform_linkInfo.xml" --rom_model -o "newnetworkingplatform.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
@@ -162,8 +166,8 @@ newnetworkingplatform.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "gpio.obj" "gpio_config.obj" "ledbank.obj" "main.obj" "startup_msp432p401r_ccs.obj" "state.obj" "system_msp432p401r.obj" "timer.obj" "timer_config.obj" 
-	-$(RM) "gpio.d" "gpio_config.d" "ledbank.d" "main.d" "startup_msp432p401r_ccs.d" "state.d" "system_msp432p401r.d" "timer.d" "timer_config.d" 
+	-$(RM) "gpio.obj" "gpio_config.obj" "ledbank.obj" "main.obj" "message.obj" "receiver.obj" "startup_msp432p401r_ccs.obj" "state.obj" "system_msp432p401r.obj" "timer.obj" "timer_config.obj" "transmitter.obj" "uart.obj" 
+	-$(RM) "gpio.d" "gpio_config.d" "ledbank.d" "main.d" "message.d" "receiver.d" "startup_msp432p401r_ccs.d" "state.d" "system_msp432p401r.d" "timer.d" "timer_config.d" "transmitter.d" "uart.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

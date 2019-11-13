@@ -25,9 +25,35 @@ typedef struct{
     uint8_t crc_flag;
 }header;
 
+typedef enum{
+    eReceiver_DONE,
+    eReceiver_READY,
+    eReceiver_PAUSED,
+    eReceiver_RUNNING
+}eReceiver_Status;
+
+typedef enum{
+    eReceiver_IGNORED,
+    eReceiver_CONTINUE
+}eReceiver_Ignore_Status;
+
+typedef enum{
+    eBit_ZERO=0x0U,
+    eBit_ONE=0x1U
+}eBit_Received;
+
+typedef enum{
+    eBit_FIRST,
+    eBit_MANY
+}eBit;
+
 void start_receiving(void);
-uint16_t calculate_crc(void);
-void receive_new_bit(uint8_t newbit);
+void pause_receiving(void);
+void continue_receiving(void);
+void finish_receiving(void);
+void receive_half_bit(void);
+void receive_new_bit(uint8_t new_bit);
 void configure_receiver(void);
+eReceiver_Ignore_Status get_receive_half_bit(void);
 
 #endif /* RECEIVER_H_ */

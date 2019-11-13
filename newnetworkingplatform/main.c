@@ -5,6 +5,13 @@
 #include "state.h"
 #include "uart.h"
 #include "transmitter.h"
+#include "receiver.h"
+#include "message.h"
+
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 
 /**
@@ -15,6 +22,7 @@ extern const gpio manchester;
 extern const gpio encoding_out;
 extern const timer_config TIMERA;
 extern const timer_config MANCHESTER_TIMER;
+extern const timer_config RANDOM_TIMER;
 eSM_State state;
 
 extern volatile char buffer[BUFFER_MAX];
@@ -30,15 +38,35 @@ void main_program(void);
 int main(void)
 {
     configure_clock();
+    P2OUT = 0U;
+
+
+
+
+
+    configure_receiver();
+//    start_receiving();
+//    receive_new_bit(0U);
+//    receive_new_bit(0U);
+//    receive_new_bit(1U);
+//    receive_new_bit(1U);
+//    receive_new_bit(1U);
+//    receive_new_bit(1U);
+//    receive_new_bit(1U);
+//    receive_new_bit(1U);
+//    finish_receiving();
+    //finish_receiving();
     uart_config(UART_1_ADDRESS);
     NVIC_EnableIRQ(EUSCIA0_IRQn);
     gpio_init(&encoding_out);
     gpio_set(&encoding_out);
     timer_init(&MANCHESTER_TIMER);
+//    timer_init(&RANDOM_TIMER);
+//    enable_timer_interrupt(&RANDOM_TIMER, CCTL0, TA2_0_IRQn);
     set_timer_compare(&MANCHESTER_TIMER, CCR0, MANCHESTER_HALF_PERIOD);
     enable_timer_interrupt(&MANCHESTER_TIMER, CCTL0, TA1_0_IRQn);
     uart_start_receiving(UART_1_ADDRESS);
-    load_buffer(buffer, sizeof(buffer));
+    load_buffer(buffer, 256U + 6U + 2U);
     main_program();
 #if defined(ONE_TIME_LOAD)
     while(!ready_to_transmit);
