@@ -57,7 +57,7 @@ void PORT2_IRQHandler(void){
 
     } else {
         //printf("This shouldn't be happening\n");
-        printf("yikes\n");
+        //printf("yikes\n");
     }
     P2IFG = 0U;
     __enable_interrupt();
